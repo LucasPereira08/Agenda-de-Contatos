@@ -24,13 +24,17 @@ public class ContatosTeste {
 				menu.adicionarContato(c);
 				lista.add(c);
 				break;
-			
+
 			case 2:
 				menu.buscarContato(lista);
 				break;
-			
+
 			case 3:
 				menu.verContatos(lista);
+				break;
+
+			case 4:
+				menu.apagarContato(lista);
 				break;
 			}
 		} while (entrada != 5);
