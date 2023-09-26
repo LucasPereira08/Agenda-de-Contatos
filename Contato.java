@@ -23,4 +23,14 @@ public class Contato {
 	public int getNumero() {
 		return this.numero;
 	}
+	
+	public boolean apenasNumeros(String teste) {
+		for (int i = 0; i < teste.length(); i++) {
+			if (!Character.isDigit(teste.charAt(i))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

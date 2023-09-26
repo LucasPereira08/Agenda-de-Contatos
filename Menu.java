@@ -7,6 +7,9 @@ import java.util.TreeSet;
 
 public class Menu {
 	Scanner scan = new Scanner(System.in);
+	Contato c = new Contato();
+	
+	boolean verificacao = false;
 
 	public void menuPrincipal() {
 		System.out.println("****Agenda de Contatos****");
@@ -23,9 +26,17 @@ public class Menu {
 	public void adicionarContato(Contato c) {
 		System.out.print("Digite o nome do contato: ");
 		c.setNome(scan.nextLine());
-		System.out.print("Digite o número do contato: ");
-		c.setNumero(scan.nextInt());
-		scan.nextLine();
+		do {
+			System.out.print("Digite o número do contato: ");
+			String numeroContato = scan.nextLine();
+			
+			if (c.apenasNumeros(numeroContato)) {
+				c.setNumero(Integer.parseInt(numeroContato));
+				verificacao = true;
+			} else {
+				System.out.println("Digite apenas números!");
+			}
+		} while (verificacao == false);
 	}
 
 	public void buscarContato(List<Contato> lista) {
@@ -36,7 +47,7 @@ public class Menu {
 		boolean encerrarLoop = false;
 		do {
 			for (Contato contato : lista) {
-				if (contato.getNome().equals(entrada)) {
+				if (contato.getNome().equalsIgnoreCase(entrada)) {
 					System.out.println("Nome: " + contato.getNome());
 					System.out.println("Número: " + contato.getNumero());
 					System.out.println();
@@ -55,6 +66,9 @@ public class Menu {
 	}
 
 	public void verContatos(List<Contato> lista) {
+		System.out.println();
+		System.out.println("****Seus Contatos****");
+
 		for (Contato contato : lista) {
 			System.out.println("Nome: " + contato.getNome());
 			System.out.println("Número: " + contato.getNumero());
@@ -69,16 +83,19 @@ public class Menu {
 		Set<Integer> busca = new TreeSet<>();
 
 		for (int i = 0; i < lista.size(); i++) {
-			if (lista.get(i).getNome().equals(entrada)) {
+			if (lista.get(i).getNome().equalsIgnoreCase(entrada)) {
 				busca.add(i);
 			}
 		}
 
 		if (busca.size() == 0) {
 			System.out.println("Nenhum contato encontrado!");
+			System.out.println();
 		} else if (busca.size() == 1) {
 			for (int valor : busca) {
 				lista.remove(valor);
+				System.out.println("Contato apagado com sucesso!");
+				System.out.println();
 			}
 		} else if (busca.size() > 1) {
 			for (int valor : busca) {
@@ -86,18 +103,31 @@ public class Menu {
 				System.out.println("Nome: " + lista.get(valor).getNumero());
 				System.out.println();
 			}
-
-			System.out.print("Digite o número do contato que deseja apagar: ");
-			int confirmarNumero = scan.nextInt();
-			scan.nextLine();
+			
+			String confirmarNumero;
+			int numeroVerificado = 0;
+			
+			do {
+				System.out.print("Digite o número do contato que deseja apagar: ");
+				confirmarNumero = scan.nextLine();
+				
+				if (c.apenasNumeros(confirmarNumero)) {
+					numeroVerificado = Integer.parseInt(confirmarNumero);
+				} else {
+					System.out.println("Digite um número válido!");
+				}
+			} while (!c.apenasNumeros(confirmarNumero));
 
 			int i = 0;
 			for (int valor : busca) {
-				if (lista.get(valor).getNome().equals(entrada) && lista.get(valor).getNumero() == confirmarNumero) {
+				if (lista.get(valor).getNome().equalsIgnoreCase(entrada) && lista.get(valor).getNumero() == numeroVerificado) {
 					lista.remove(valor);
-				} else if (lista.get(valor).getNome().equals(entrada) && lista.get(valor).getNumero() != confirmarNumero
+					System.out.println("Contato apagado com sucesso!");
+					System.out.println();
+				} else if (lista.get(valor).getNome().equalsIgnoreCase(entrada) && lista.get(valor).getNumero() != numeroVerificado
 						&& i == (busca.size() - 1)) {
 					System.out.println("Nenhum contato com o número digitado foi encontrado!");
+					System.out.println();
 				}
 
 				i++;

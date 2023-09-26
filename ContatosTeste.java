@@ -23,6 +23,8 @@ public class ContatosTeste {
 				Contato c = new Contato();
 				menu.adicionarContato(c);
 				lista.add(c);
+				System.out.println("Contato adicionado com sucesso!");
+				System.out.println();
 				break;
 
 			case 2:
